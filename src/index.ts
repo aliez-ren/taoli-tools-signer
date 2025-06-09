@@ -1,11 +1,10 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { parse } from 'smol-toml'
+import { accountsSchema } from './schema'
 
 type Bindings = {
-  AUTH: string
   ACCOUNTS: string
-  TOKENS: string
 }
 
 const app = new Hono<{ Bindings: Bindings }>()
@@ -17,10 +16,13 @@ app.use(
   }),
 )
 
-app.get('/', (c) => {
-  const accounts = parse(c.env.ACCOUNTS)
-  console.log(accounts)
-  return c.text('OK')
+app.get('/', async (c) => {
+  try {
+    await accountsSchema.parseAsync(parse(c.env.ACCOUNTS))
+    return c.text('OK')
+  } catch {
+    return c.text('ERR', 500)
+  }
 })
 
 export default app
