@@ -22,6 +22,7 @@ type Bindings = {
 declare module 'hono' {
   interface ContextVariableMap {
     account: z.TypeOf<typeof accountSchema>
+    body: Uint8Array
   }
 }
 
@@ -63,6 +64,7 @@ app.use('/:account/*', async (c, next) => {
   }
 
   c.set('account', account)
+  c.set('body', new Uint8Array(body))
   return await next()
 })
 
@@ -94,15 +96,15 @@ app.get('/:account/:platform', async (c) => {
 
 app.post('/:account/:platform', async (c) => {
   const account = c.get('account')
+  const body = c.get('body')
   const platform = platformSchame.parse(c.req.param('platform'))
   const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
-  const tx = new Uint8Array(await c.req.arrayBuffer())
   if (platform === 'evm') {
     const privateKey = toHex(
       slip10.fromMasterSeed(seed).derive(`m/44'/60'/0'/0'`).privateKey,
     )
     const account = privateKeyToAccount(privateKey)
-    const transaction = parseTransaction(toHex(tx))
+    const transaction = parseTransaction(toHex(body))
     const signedTransaction = await account.signTransaction(transaction)
     return c.body(fromHex(signedTransaction, 'bytes'))
   }
@@ -111,10 +113,9 @@ app.post('/:account/:platform', async (c) => {
       .fromMasterSeed(seed)
       .derive(`m/44'/501'/0'/0'`)
     const { keyPair } = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
-    const transactionDecoder = getTransactionDecoder()
     const transaction = await signTransaction(
       [keyPair],
-      transactionDecoder.decode(tx),
+      getTransactionDecoder().decode(body),
     )
     return c.body(
       Buffer.from(getBase64EncodedWireTransaction(transaction), 'base64'),
