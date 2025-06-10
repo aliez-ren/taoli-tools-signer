@@ -9,10 +9,18 @@ import slip10 from 'micro-key-producer/slip10.js'
 import { parse } from 'smol-toml'
 import { fromHex, toHex } from 'viem'
 import { privateKeyToAddress } from 'viem/accounts'
-import { accountsSchema, platformSchame } from './schema'
+import type { z } from 'zod/v4'
+import { hmacSha256 } from './hmac'
+import { type accountSchema, accountsSchema, platformSchame } from './schema'
 
 type Bindings = {
   ACCOUNTS: string
+}
+
+declare module 'hono' {
+  interface ContextVariableMap {
+    account: z.TypeOf<typeof accountSchema>
+  }
 }
 
 const base58Encoder = getBase58Encoder()
@@ -35,14 +43,38 @@ app.get('/', (c) => {
   }
 })
 
-app.get('/:name/:platform', async (c) => {
+app.use('/:account/*', async (c, next) => {
   try {
     const accounts = accountsSchema.parse(parse(c.env.ACCOUNTS))
-    const platform = platformSchame.parse(c.req.param('platform'))
-    const account = accounts[c.req.param('name')]
+    const account = accounts[c.req.param('account')]
     if (!account) {
       return c.text('Account not found', 404)
     }
+
+    const sig = c.req.header('X-SIG')
+    if (!sig) {
+      return c.text('No signature', 401)
+    }
+
+    const body = await c.req.arrayBuffer()
+    if (
+      sig !==
+      Buffer.from(await hmacSha256(account.secret, body)).toString('base64')
+    ) {
+      return c.text('Wrong signature', 403)
+    }
+
+    c.set('account', account)
+    return await next()
+  } catch {
+    return c.text('ERR', 500)
+  }
+})
+
+app.get('/:account/:platform', async (c) => {
+  try {
+    const account = c.get('account')
+    const platform = platformSchame.parse(c.req.param('platform'))
     const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
     if (platform === 'evm') {
       const privateKey = toHex(
@@ -52,9 +84,9 @@ app.get('/:name/:platform', async (c) => {
       return c.body(fromHex(account, 'bytes'))
     }
     if (platform === 'svm') {
-      const privateKey = slip10
+      const { privateKey } = slip10
         .fromMasterSeed(seed)
-        .derive(`m/44'/501'/0'/0'`).privateKey
+        .derive(`m/44'/501'/0'/0'`)
       const keyPair = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
       return c.body(new Uint8Array(base58Encoder.encode(keyPair.address)))
     }
@@ -64,12 +96,10 @@ app.get('/:name/:platform', async (c) => {
   }
 })
 
-app.post('/:name/:platform', (c) => {
+app.post('/:account/:platform', (c) => {
   try {
-    const accounts = accountsSchema.parse(parse(c.env.ACCOUNTS))
+    const account = c.get('account')
     const platform = platformSchame.parse(c.req.param('platform'))
-    const account = accounts[c.req.param('name')]
-
     return c.text('OK')
   } catch {
     return c.text('ERR', 500)
