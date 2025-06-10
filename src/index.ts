@@ -1,11 +1,16 @@
 import { mnemonicToSeed } from '@scure/bip39'
-import { createKeyPairSignerFromPrivateKeyBytes } from '@solana/kit'
+import {
+  createKeyPairSignerFromPrivateKeyBytes,
+  getBase64EncodedWireTransaction,
+  getTransactionDecoder,
+  signTransaction,
+} from '@solana/kit'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import slip10 from 'micro-key-producer/slip10.js'
 import { parse } from 'smol-toml'
-import { toHex } from 'viem'
-import { privateKeyToAddress } from 'viem/accounts'
+import { fromHex, parseTransaction, toHex } from 'viem'
+import { privateKeyToAccount, privateKeyToAddress } from 'viem/accounts'
 import type { z } from 'zod/v4'
 import { hmacSha256 } from './hmac'
 import { type accountSchema, accountsSchema, platformSchame } from './schema'
@@ -81,16 +86,41 @@ app.get('/:account/:platform', async (c) => {
     const { privateKey } = slip10
       .fromMasterSeed(seed)
       .derive(`m/44'/501'/0'/0'`)
-    const keyPair = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
-    return c.text(keyPair.address)
+    const { address } = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
+    return c.text(address)
   }
   return c.text('Wrong platform', 400)
 })
 
-app.post('/:account/:platform', (c) => {
+app.post('/:account/:platform', async (c) => {
   const account = c.get('account')
   const platform = platformSchame.parse(c.req.param('platform'))
-  return c.text('OK')
+  const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
+  const tx = new Uint8Array(await c.req.arrayBuffer())
+  if (platform === 'evm') {
+    const privateKey = toHex(
+      slip10.fromMasterSeed(seed).derive(`m/44'/60'/0'/0'`).privateKey,
+    )
+    const account = privateKeyToAccount(privateKey)
+    const transaction = parseTransaction(toHex(tx))
+    const signedTransaction = await account.signTransaction(transaction)
+    return c.body(fromHex(signedTransaction, 'bytes'))
+  }
+  if (platform === 'svm') {
+    const { privateKey } = slip10
+      .fromMasterSeed(seed)
+      .derive(`m/44'/501'/0'/0'`)
+    const { keyPair } = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
+    const transactionDecoder = getTransactionDecoder()
+    const transaction = await signTransaction(
+      [keyPair],
+      transactionDecoder.decode(tx),
+    )
+    return c.body(
+      Buffer.from(getBase64EncodedWireTransaction(transaction), 'base64'),
+    )
+  }
+  return c.text('Wrong platform', 400)
 })
 
 export default app
