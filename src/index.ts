@@ -34,76 +34,68 @@ app.use(
   }),
 )
 
-app.get('/', (c) => {
+app.use('/*', async (c, next) => {
   try {
-    accountsSchema.parse(parse(c.env.ACCOUNTS))
-    return c.text('OK')
-  } catch {
-    return c.text('ERR', 500)
-  }
-})
-
-app.use('/:account/*', async (c, next) => {
-  try {
-    const accounts = accountsSchema.parse(parse(c.env.ACCOUNTS))
-    const account = accounts[c.req.param('account')]
-    if (!account) {
-      return c.text('Account not found', 404)
-    }
-
-    const sig = c.req.header('X-SIG')
-    if (!sig) {
-      return c.text('No signature', 401)
-    }
-
-    const body = await c.req.arrayBuffer()
-    if (
-      sig !==
-      Buffer.from(await hmacSha256(account.secret, body)).toString('base64')
-    ) {
-      return c.text('Wrong signature', 403)
-    }
-
-    c.set('account', account)
     return await next()
   } catch {
     return c.text('ERR', 500)
   }
 })
 
-app.get('/:account/:platform', async (c) => {
-  try {
-    const account = c.get('account')
-    const platform = platformSchame.parse(c.req.param('platform'))
-    const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
-    if (platform === 'evm') {
-      const privateKey = toHex(
-        slip10.fromMasterSeed(seed).derive(`m/44'/60'/0'/0'`).privateKey,
-      )
-      const account = privateKeyToAddress(privateKey)
-      return c.body(fromHex(account, 'bytes'))
-    }
-    if (platform === 'svm') {
-      const { privateKey } = slip10
-        .fromMasterSeed(seed)
-        .derive(`m/44'/501'/0'/0'`)
-      const keyPair = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
-      return c.body(new Uint8Array(base58Encoder.encode(keyPair.address)))
-    }
-    return c.text('OK')
-  } catch {
-    return c.text('ERR', 500)
+app.use('/:account/*', async (c, next) => {
+  const accounts = accountsSchema.parse(parse(c.env.ACCOUNTS))
+  const account = accounts[c.req.param('account')]
+  if (!account) {
+    return c.text('Account not found', 404)
   }
+
+  const sig = c.req.header('X-SIG')
+  if (!sig) {
+    return c.text('No signature', 401)
+  }
+
+  const body = await c.req.arrayBuffer()
+  if (
+    sig !==
+    Buffer.from(await hmacSha256(account.secret, body)).toString('base64')
+  ) {
+    return c.text('Wrong signature', 403)
+  }
+
+  c.set('account', account)
+  return await next()
+})
+
+app.get('/', (c) => {
+  accountsSchema.parse(parse(c.env.ACCOUNTS))
+  return c.text('OK')
+})
+
+app.get('/:account/:platform', async (c) => {
+  const account = c.get('account')
+  const platform = platformSchame.parse(c.req.param('platform'))
+  const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
+  if (platform === 'evm') {
+    const privateKey = toHex(
+      slip10.fromMasterSeed(seed).derive(`m/44'/60'/0'/0'`).privateKey,
+    )
+    const account = privateKeyToAddress(privateKey)
+    return c.body(fromHex(account, 'bytes'))
+  }
+  if (platform === 'svm') {
+    const { privateKey } = slip10
+      .fromMasterSeed(seed)
+      .derive(`m/44'/501'/0'/0'`)
+    const keyPair = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
+    return c.body(new Uint8Array(base58Encoder.encode(keyPair.address)))
+  }
+  return c.text('OK')
 })
 
 app.post('/:account/:platform', (c) => {
-  try {
-    const account = c.get('account')
-    const platform = platformSchame.parse(c.req.param('platform'))
-    return c.text('OK')
-  } catch {
-    return c.text('ERR', 500)
-  }
+  const account = c.get('account')
+  const platform = platformSchame.parse(c.req.param('platform'))
+  return c.text('OK')
 })
 
 export default app
