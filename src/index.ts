@@ -1,3 +1,4 @@
+import { HDKey } from '@scure/bip32'
 import { mnemonicToSeed } from '@scure/bip39'
 import {
   createKeyPairSignerFromPrivateKeyBytes,
@@ -10,7 +11,7 @@ import { cors } from 'hono/cors'
 import slip10 from 'micro-key-producer/slip10.js'
 import { parse } from 'smol-toml'
 import { fromHex, parseTransaction, toHex } from 'viem'
-import { privateKeyToAccount, privateKeyToAddress } from 'viem/accounts'
+import { hdKeyToAccount } from 'viem/accounts'
 import type { z } from 'zod/v4'
 import { hmacSha256 } from './hmac'
 import { type accountSchema, accountsSchema, platformSchame } from './schema'
@@ -78,10 +79,7 @@ app.get('/:account/:platform', async (c) => {
   const platform = platformSchame.parse(c.req.param('platform'))
   const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
   if (platform === 'evm') {
-    const privateKey = toHex(
-      slip10.fromMasterSeed(seed).derive(`m/44'/60'/0'/0'`).privateKey,
-    )
-    const address = privateKeyToAddress(privateKey)
+    const { address } = hdKeyToAccount(HDKey.fromMasterSeed(seed))
     return c.text(address)
   }
   if (platform === 'svm') {
@@ -100,10 +98,7 @@ app.post('/:account/:platform', async (c) => {
   const platform = platformSchame.parse(c.req.param('platform'))
   const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
   if (platform === 'evm') {
-    const privateKey = toHex(
-      slip10.fromMasterSeed(seed).derive(`m/44'/60'/0'/0'`).privateKey,
-    )
-    const account = privateKeyToAccount(privateKey)
+    const account = hdKeyToAccount(HDKey.fromMasterSeed(seed))
     const transaction = parseTransaction(toHex(body))
     const signedTransaction = await account.signTransaction(transaction)
     return c.body(fromHex(signedTransaction, 'bytes'))
