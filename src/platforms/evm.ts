@@ -5,6 +5,7 @@ import {
   decodeFunctionData,
   erc20Abi,
   fromHex,
+  getAddress,
   parseTransaction,
   toHex,
 } from 'viem'
@@ -59,12 +60,12 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
       }
 
       const chainId = tx.chainId ?? ethereum.id
-      if (!allowlist[tx.to]?.has(chainId)) {
+      if (!allowlist[getAddress(tx.to)]?.has(chainId)) {
         try {
           const data = decodeFunctionData({ abi: erc20Abi, data: tx.data })
           if (
             data.functionName !== 'approve' ||
-            !allowlist[data.args[0]]?.has(chainId)
+            !allowlist[getAddress(data.args[0])]?.has(chainId)
           ) {
             throw new Error('Forbidden approval')
           }
