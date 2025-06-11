@@ -7,6 +7,9 @@
 - IP restriction
 - Contract Allowlist
 
+## Configuration
+see [example.keychain.toml](example.keychain.toml)
+
 ## Deploy to Cloudflare Workers
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Faliez-ren%2Ftaoli-tools-signer)
@@ -16,9 +19,11 @@
 ## Deploy to Docker Container
 
 ```bash
+cat keychain.toml | docker secret create KEYCHAIN -
+
 docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest \
   && docker rm -f taoli-tools-signer \
-  && docker run -d --restart=always --name=taoli-tools-signer ghcr.io/aliez-ren/taoli-tools-signer:latest \
+  && docker run -d --restart=always --name=taoli-tools-signer --secret=KEYCHAIN ghcr.io/aliez-ren/taoli-tools-signer:latest \
   && docker logs -f taoli-tools-signer
 ```
 

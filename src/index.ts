@@ -20,6 +20,8 @@ declare module 'hono' {
   }
 }
 
+const runtimeKey = getRuntimeKey()
+
 const app = new Hono<{ Bindings: Bindings }>()
 
 app.use(
@@ -38,7 +40,15 @@ app.use('/*', async (c, next) => {
 })
 
 app.use('/:key/*', async (c, next) => {
-  const keychain = keychainSchema.parse(parse(c.env.KEYCHAIN))
+  const keychain = keychainSchema.parse(
+    parse(
+      runtimeKey === 'workerd'
+        ? c.env.KEYCHAIN
+        : runtimeKey === 'bun'
+          ? await (await import('bun')).file('/run/secrets/KEYCHAIN').text()
+          : '',
+    ),
+  )
   const key = keychain[c.req.param('key')]
   if (!key) {
     return c.text('Key not found', 404)
@@ -49,7 +59,6 @@ app.use('/:key/*', async (c, next) => {
     return c.text('No signature', 401)
   }
 
-  const runtimeKey = getRuntimeKey()
   const getConnInfo =
     runtimeKey === 'workerd'
       ? getWorkerdConnInfo
@@ -75,11 +84,6 @@ app.use('/:key/*', async (c, next) => {
   c.set('key', key)
   c.set('body', new Uint8Array(body))
   return await next()
-})
-
-app.get('/', (c) => {
-  const keychain = keychainSchema.parse(parse(c.env.KEYCHAIN))
-  return c.text(`Keys: ${Object.keys(keychain)}`)
 })
 
 app.get('/:key/:platform', async (c) => {
