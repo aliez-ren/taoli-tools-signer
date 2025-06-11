@@ -24,7 +24,7 @@ cat keychain.toml | docker secret create KEYCHAIN -
 
 docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest \
   && docker rm -f taoli-tools-signer \
-  && docker run -d --restart=always --name=taoli-tools-signer --secret=KEYCHAIN ghcr.io/aliez-ren/taoli-tools-signer:latest \
+  && docker run -d --restart=always --name=taoli-tools-signer ghcr.io/aliez-ren/taoli-tools-signer:latest \
   && docker logs -f taoli-tools-signer
 ```
 
