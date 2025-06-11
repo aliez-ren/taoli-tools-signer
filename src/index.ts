@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { getRuntimeKey } from 'hono/adapter'
-import { getConnInfo as getBunConnInfo } from 'hono/bun'
 import { getConnInfo as getWorkerdConnInfo } from 'hono/cloudflare-workers'
 import { cors } from 'hono/cors'
 import { parse } from 'smol-toml'
@@ -55,7 +54,7 @@ app.use('/:key/*', async (c, next) => {
     runtimeKey === 'workerd'
       ? getWorkerdConnInfo
       : runtimeKey === 'bun'
-        ? getBunConnInfo
+        ? (await import('hono/bun')).getConnInfo
         : undefined
   const info = getConnInfo?.(c)
   const ips = typeof key.ip === 'string' ? [key.ip] : (key.ip ?? [])
