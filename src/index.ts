@@ -44,8 +44,8 @@ app.use('/:key/*', async (c, next) => {
     parse(
       runtimeKey === 'workerd'
         ? c.env.KEYCHAIN
-        : runtimeKey === 'bun'
-          ? await (await import('bun')).file('/run/secrets/KEYCHAIN').text()
+        : runtimeKey === 'bun' && typeof Bun !== 'undefined'
+          ? await Bun.file('/run/secrets/KEYCHAIN').text()
           : '',
     ),
   )
