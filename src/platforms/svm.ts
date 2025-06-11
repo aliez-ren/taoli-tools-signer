@@ -28,7 +28,7 @@ export const SVM: Platform<Address> = async (mnemonic, passphrase) => {
         compiledTransactionMessageCodec.decode(tx.messageBytes)
       for (const instruction of instructions) {
         const programId = staticAccounts[instruction.programAddressIndex]
-        if (!programId || !whitelist.has(programId)) {
+        if (!programId || !allowlist.has(programId)) {
           throw new Error('Forbidden program')
         }
       }
@@ -39,7 +39,7 @@ export const SVM: Platform<Address> = async (mnemonic, passphrase) => {
   }
 }
 
-const whitelist = new Set([
+const allowlist = new Set([
   'ComputeBudget111111111111111111111111111111',
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
 
