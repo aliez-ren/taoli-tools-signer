@@ -1,4 +1,3 @@
-[example-account]
+[example-key]
 secret = "example secret"
 mnemonic = "faculty person garden gauge february stone attack globe swallow shallow ensure option"
-passphrase = "example passphrase"

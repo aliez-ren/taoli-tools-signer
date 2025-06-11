@@ -2,7 +2,7 @@ const encoder = new TextEncoder()
 
 export async function hmacSha256(
   secret: string,
-  body: ArrayBuffer,
+  data: ArrayBuffer,
 ): Promise<ArrayBuffer> {
   const keyData = encoder.encode(secret)
   const key = await crypto.subtle.importKey(
@@ -12,5 +12,5 @@ export async function hmacSha256(
     false,
     ['sign'],
   )
-  return crypto.subtle.sign('HMAC', key, body)
+  return crypto.subtle.sign('HMAC', key, data)
 }

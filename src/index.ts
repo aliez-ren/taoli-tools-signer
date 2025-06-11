@@ -5,15 +5,15 @@ import type { z } from 'zod/v4'
 import { hmacSha256 } from './hmac'
 import { EVM } from './platforms/evm'
 import { SVM } from './platforms/svm'
-import { type accountSchema, accountsSchema, platformSchame } from './schema'
+import { type keySchema, keychainSchema, platformSchame } from './schema'
 
 type Bindings = {
-  ACCOUNTS: string
+  KEYCHAIN: string
 }
 
 declare module 'hono' {
   interface ContextVariableMap {
-    account: z.TypeOf<typeof accountSchema>
+    key: z.TypeOf<typeof keySchema>
     body: Uint8Array
   }
 }
@@ -35,11 +35,11 @@ app.use('/*', async (c, next) => {
   }
 })
 
-app.use('/:account/*', async (c, next) => {
-  const accounts = accountsSchema.parse(parse(c.env.ACCOUNTS))
-  const account = accounts[c.req.param('account')]
-  if (!account) {
-    return c.text('Account not found', 404)
+app.use('/:key/*', async (c, next) => {
+  const keychain = keychainSchema.parse(parse(c.env.KEYCHAIN))
+  const key = keychain[c.req.param('key')]
+  if (!key) {
+    return c.text('Key not found', 404)
   }
 
   const sig = c.req.header('X-SIG')
@@ -49,39 +49,35 @@ app.use('/:account/*', async (c, next) => {
 
   const body = await c.req.arrayBuffer()
   if (
-    sig !==
-    Buffer.from(await hmacSha256(account.secret, body)).toString('base64')
+    sig !== Buffer.from(await hmacSha256(key.secret, body)).toString('base64')
   ) {
     return c.text('Wrong signature', 403)
   }
 
-  c.set('account', account)
+  c.set('key', key)
   c.set('body', new Uint8Array(body))
   return await next()
 })
 
 app.get('/', (c) => {
-  const accounts = accountsSchema.parse(parse(c.env.ACCOUNTS))
-  return c.text(`Accounts: ${Object.keys(accounts)}`)
+  const keychain = keychainSchema.parse(parse(c.env.KEYCHAIN))
+  return c.text(`Keys: ${Object.keys(keychain)}`)
 })
 
-app.get('/:account/:platform', async (c) => {
-  const account = c.get('account')
+app.get('/:key/:platform', async (c) => {
+  const key = c.get('key')
   const platform = platformSchame.parse(c.req.param('platform'))
-  const { address } = await { EVM, SVM }[platform](
-    account.mnemonic,
-    account.passphrase,
-  )
+  const { address } = await { EVM, SVM }[platform](key.mnemonic, key.passphrase)
   return c.text(address)
 })
 
-app.post('/:account/:platform', async (c) => {
-  const account = c.get('account')
+app.post('/:key/:platform', async (c) => {
+  const key = c.get('key')
   const transaction = c.get('body')
   const platform = platformSchame.parse(c.req.param('platform'))
   const { signTransaction } = await { EVM, SVM }[platform](
-    account.mnemonic,
-    account.passphrase,
+    key.mnemonic,
+    key.passphrase,
   )
   const signedTransaction = await signTransaction(transaction)
   return c.body(signedTransaction)
