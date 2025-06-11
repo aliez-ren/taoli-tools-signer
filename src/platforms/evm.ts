@@ -35,7 +35,9 @@ import {
   polygon,
   polygonZkEvm,
   scroll,
+  sei,
   sonic,
+  unichain,
   xLayer,
   zetachain,
   zksync,
@@ -82,7 +84,6 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
 
 const allowlist: Record<Address, Set<number>> = {
   // https://web3.okx.com/build/dev-docs/dex-api/dex-get-aggregator-supported-chains
-  // https://web3.okx.com/zh-hans/build/dev-docs/dex-api/dex-smart-contract
   '0x40aA958dd87FC8305b97f2BA922CDdCa374bcD7f': new Set([
     avalanche.id,
     ethereum.id,
@@ -113,6 +114,46 @@ const allowlist: Record<Address, Set<number>> = {
   '0x03B5ACdA01207824cc7Bc21783Ee5aa2B8d1D2fE': new Set([zetachain.id]),
   '0x5fD2Dc91FF1dE7FF4AEB1CACeF8E9911bAAECa68': new Set([blast.id]),
   '0xd321ab5589d3e8fa5df985ccfef625022e2dd910': new Set([sonic.id]),
+  '0xbd0EBE49779E154E5042B34D5BcfBc498e4B3249': new Set([mode.id]),
+  '0x801D8ED849039007a7170830623180396492c7ED': new Set([sei.id]),
+  '0x2e28281Cf3D58f475cebE27bec4B8a23dFC7782c': new Set([unichain.id]),
+
+  // https://web3.okx.com/zh-hans/build/dev-docs/dex-api/dex-smart-contract
+  '0x6088d94C5a40CEcd3ae2D4e0710cA687b91c61d0': new Set([
+    ethereum.id,
+    arbitrum.id,
+  ]),
+  '0x9b9efa5Efa731EA9Bbb0369E91fA17Abf249CFD4': new Set([
+    avalanche.id,
+    base.id,
+    bsc.id,
+    manta.id,
+    mode.id,
+    optimism.id,
+    polygon.id,
+    scroll.id,
+    sonic.id,
+    zetachain.id,
+  ]),
+  '0x5058C498864795689fe41fB54f29a8B71F0A7201': new Set([zksync.id]),
+  '0xd30D8CA2E7715eE6804a287eB86FAfC0839b1380': new Set([
+    okc.id,
+    fantom.id,
+    mantle.id,
+    blast.id,
+    polygonZkEvm.id,
+    merlin.id,
+    xLayer.id,
+    mode.id,
+    sei.id,
+  ]),
+  '0x06f183D52D92c13a5f2B989B8710BA7F00bd6f87': new Set([linea.id, metis.id]),
+  '0x8feB9E84b7E9DC86adc6cD6Eb554C5B4355c8405': new Set([confluxESpace.id]),
+  '0xA3d7C702e6Fa835504B4a9649F422d1DdC6995E3': new Set([unichain.id]),
+  '0xbC92122fDa4061FF3f6C068d2cc7e6c0bd81bA00': new Set([ethereum.id]),
+  '0xD59d6b26C2593ED0D56bA6170a449dF1e394B65A': new Set([base.id]),
+  '0x76D43a252300955E6bd17A6992201fc02f0E5C10': new Set([bsc.id]),
+  '0x0b59f6798c467136819f2B276fa03032cC0A4653': new Set([arbitrum.id]),
 
   // https://portal.1inch.dev/documentation/contracts/aggregation-protocol/aggregation-introduction
   '0x111111125421cA6dc452d289314280a0f8842A65': new Set([
