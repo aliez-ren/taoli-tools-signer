@@ -16,9 +16,7 @@ Supports multiple EVM chains and Solana.
 - [Odos](https://app.odos.xyz/)
 - [OKX DEX](https://web3.okx.com/dex-swap)
 
-## Deployment
-
-### The Keychain file
+## The Keychain file
 
 ```toml
 [your-api-key] # API Key
@@ -31,6 +29,10 @@ Example file: [example.keychain.toml](example.keychain.toml).
 ⚠️WARNING: DO NOT use the mnemonic in the example file or your assets may lose.
 
 The minium length of secret is 32 characters. So the example is illegal in production.
+
+## Deployment
+
+Two deployment methods, choose one on your own.
 
 ### Deploy to Cloudflare Workers
 
@@ -70,3 +72,7 @@ The minium length of secret is 32 characters. So the example is illegal in produ
    ```
 
 5. In this case, `Signer URL` is `http://127.0.0.1:3000/your-api-key` and `Signer Secret` is `your api secret`.
+
+## Work with Taoli Tools
+
+See [Taoli Tools Document](https://renzholy.notion.site/Taoli-Tools-Signer-20f64b000c2580eda7f2f6fbb357da94)
