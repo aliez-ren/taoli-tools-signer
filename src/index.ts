@@ -1,4 +1,7 @@
 import { Hono } from 'hono'
+import { getRuntimeKey } from 'hono/adapter'
+import { getConnInfo as getBunConnInfo } from 'hono/bun'
+import { getConnInfo as getWorkerdConnInfo } from 'hono/cloudflare-workers'
 import { cors } from 'hono/cors'
 import { parse } from 'smol-toml'
 import type { z } from 'zod/v4'
@@ -45,6 +48,22 @@ app.use('/:key/*', async (c, next) => {
   const sig = c.req.header('X-SIG')
   if (!sig) {
     return c.text('No signature', 401)
+  }
+
+  const runtimeKey = getRuntimeKey()
+  const getConnInfo =
+    runtimeKey === 'workerd'
+      ? getWorkerdConnInfo
+      : runtimeKey === 'bun'
+        ? getBunConnInfo
+        : undefined
+  const info = getConnInfo?.(c)
+  const ips = typeof key.ip === 'string' ? [key.ip] : (key.ip ?? [])
+  if (
+    ips.length > 0 &&
+    (!info || !ips.find((ip) => ip === info.remote.address))
+  ) {
+    return c.text('Restricted IP', 403)
   }
 
   const body = await c.req.arrayBuffer()
