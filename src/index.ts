@@ -2,8 +2,7 @@ import { HDKey } from '@scure/bip32'
 import { mnemonicToSeed } from '@scure/bip39'
 import {
   createKeyPairSignerFromPrivateKeyBytes,
-  getBase64EncodedWireTransaction,
-  getTransactionDecoder,
+  getTransactionCodec,
   signTransaction,
 } from '@solana/kit'
 import { Hono } from 'hono'
@@ -108,13 +107,12 @@ app.post('/:account/:platform', async (c) => {
       .fromMasterSeed(seed)
       .derive(`m/44'/501'/0'/0'`)
     const { keyPair } = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
+    const transactionCodec = getTransactionCodec()
     const transaction = await signTransaction(
       [keyPair],
-      getTransactionDecoder().decode(body),
+      transactionCodec.decode(body),
     )
-    return c.body(
-      Buffer.from(getBase64EncodedWireTransaction(transaction), 'base64'),
-    )
+    return c.body(new Uint8Array(transactionCodec.encode(transaction)))
   }
   return c.text('Wrong platform', 400)
 })
