@@ -1,0 +1,8 @@
+[simple-name]
+secret = "your api secret"
+mnemonic = "faculty person garden gauge february stone attack globe swallow shallow ensure option"
+
+[with-ip-restriction]
+secret = "your api secret"
+mnemonic = "faculty person garden gauge february stone attack globe swallow shallow ensure option"
+ip = ["1.2.3.4"]
