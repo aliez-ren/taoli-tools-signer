@@ -22,13 +22,15 @@ Supports multiple EVM chains and Solana.
 
 ```toml
 [your-api-key] # API Key
-secret = "your api secret" # API Secret
+secret = "your api secret" # API Secret (at least 32 characters)
 mnemonic = "" # Your mnemonic phrases
 ip = ["1.2.3.4"] # IP restriction (optional)
 ```
 
 Example file: [example.keychain.toml](example.keychain.toml).
 ⚠️WARNING: DO NOT use the mnemonic in the example file or your assets may lose.
+
+The minium length of secret is 32 characters. So the example is illegal in production.
 
 ### Deploy to Cloudflare Workers
 
