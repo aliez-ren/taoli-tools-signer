@@ -9,4 +9,4 @@ export const keySchema = z.object({
 
 export const keychainSchema = z.record(z.string(), keySchema)
 
-export const platformSchame = z.enum(['EVM', 'SVM'])
+export const platformSchema = z.enum(['EVM', 'SVM'])

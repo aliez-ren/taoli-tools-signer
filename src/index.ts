@@ -7,7 +7,7 @@ import type { z } from 'zod/v4'
 import { hmacSha256 } from './hmac'
 import { EVM } from './platforms/evm'
 import { SVM } from './platforms/svm'
-import { type keySchema, keychainSchema, platformSchame } from './schema'
+import { type keySchema, keychainSchema, platformSchema } from './schema'
 
 type Bindings = {
   KEYCHAIN: string
@@ -84,7 +84,7 @@ app.get('/', (c) => {
 
 app.get('/:key/:platform', async (c) => {
   const key = c.get('key')
-  const platform = platformSchame.parse(c.req.param('platform'))
+  const platform = platformSchema.parse(c.req.param('platform'))
   const { address } = await { EVM, SVM }[platform](key.mnemonic, key.passphrase)
   return c.text(address)
 })
@@ -92,7 +92,7 @@ app.get('/:key/:platform', async (c) => {
 app.post('/:key/:platform', async (c) => {
   const key = c.get('key')
   const transaction = c.get('body')
-  const platform = platformSchame.parse(c.req.param('platform'))
+  const platform = platformSchema.parse(c.req.param('platform'))
   const { signTransaction } = await { EVM, SVM }[platform](
     key.mnemonic,
     key.passphrase,
