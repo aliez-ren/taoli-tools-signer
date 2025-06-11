@@ -82,6 +82,7 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
 
 const allowlist: Record<Address, Set<number>> = {
   // https://web3.okx.com/build/dev-docs/dex-api/dex-get-aggregator-supported-chains
+  // https://web3.okx.com/zh-hans/build/dev-docs/dex-api/dex-smart-contract
   '0x40aA958dd87FC8305b97f2BA922CDdCa374bcD7f': new Set([
     avalanche.id,
     ethereum.id,
