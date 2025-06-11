@@ -2,3 +2,6 @@ name = "taoli-tools-signer"
 compatibility_date = "2025-05-25"
 compatibility_flags = ["nodejs_compat"]
 main = "./src/index.ts"
+
+[placement]
+mode = "smart"
