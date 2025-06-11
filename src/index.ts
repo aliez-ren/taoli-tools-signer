@@ -4,6 +4,7 @@ import { getConnInfo as getWorkerdConnInfo } from 'hono/cloudflare-workers'
 import { cors } from 'hono/cors'
 import { parse } from 'smol-toml'
 import type { z } from 'zod/v4'
+import { TTSError } from './error'
 import { hmacSha256 } from './hmac'
 import { EVM } from './platforms/evm'
 import { SVM } from './platforms/svm'
@@ -34,8 +35,11 @@ app.use(
 app.use('/*', async (c, next) => {
   try {
     return await next()
-  } catch {
-    return c.text('Server error', 500)
+  } catch (err) {
+    return c.text(
+      `TTS: ${err instanceof TTSError ? err.message : 'Server error'}`,
+      500,
+    )
   }
 })
 
@@ -51,12 +55,12 @@ app.use('/:key/*', async (c, next) => {
   )
   const key = keychain[c.req.param('key')]
   if (!key) {
-    return c.text('Key not found', 404)
+    return c.text('TTS: Key not found', 404)
   }
 
   const sig = c.req.header('X-SIG')
   if (!sig) {
-    return c.text('No signature', 401)
+    return c.text('TTS: No signature', 401)
   }
 
   const getConnInfo =
@@ -71,14 +75,14 @@ app.use('/:key/*', async (c, next) => {
     ips.length > 0 &&
     (!info || !ips.find((ip) => ip === info.remote.address))
   ) {
-    return c.text('Restricted IP', 403)
+    return c.text('TTS: Restricted IP', 403)
   }
 
   const body = await c.req.arrayBuffer()
   if (
     sig !== Buffer.from(await hmacSha256(key.secret, body)).toString('base64')
   ) {
-    return c.text('Wrong signature', 403)
+    return c.text('TTS: Wrong signature', 403)
   }
 
   c.set('key', key)

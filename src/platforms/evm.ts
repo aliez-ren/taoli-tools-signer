@@ -42,6 +42,7 @@ import {
   zetachain,
   zksync,
 } from 'viem/chains'
+import { TTSError } from '../error'
 import type { Platform } from '../type'
 
 export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
@@ -54,11 +55,11 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
       const tx = parseTransaction(toHex(transaction))
 
       if (!tx.data || !tx.to) {
-        throw new Error('Invalid transaction')
+        throw new TTSError('Invalid transaction')
       }
 
       if (tx.value && tx.value !== BigInt(0)) {
-        throw new Error('Forbidden value')
+        throw new TTSError('Forbidden value')
       }
 
       const chainId = tx.chainId ?? ethereum.id
@@ -69,10 +70,10 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
             data.functionName !== 'approve' ||
             !allowlist[getAddress(data.args[0])]?.has(chainId)
           ) {
-            throw new Error('Forbidden approval')
+            throw new TTSError('Forbidden approval')
           }
         } catch {
-          throw new Error('Forbidden to')
+          throw new TTSError('Forbidden to')
         }
       }
 

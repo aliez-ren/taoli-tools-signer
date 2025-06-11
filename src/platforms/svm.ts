@@ -7,6 +7,7 @@ import {
   signTransaction,
 } from '@solana/kit'
 import slip10 from 'micro-key-producer/slip10.js'
+import { TTSError } from '../error'
 import type { Platform } from '../type'
 
 const transactionCodec = getTransactionCodec()
@@ -29,7 +30,7 @@ export const SVM: Platform<Address> = async (mnemonic, passphrase) => {
       for (const instruction of instructions) {
         const programId = staticAccounts[instruction.programAddressIndex]
         if (!programId || !allowlist.has(programId)) {
-          throw new Error('Forbidden program')
+          throw new TTSError('Forbidden program')
         }
       }
 
