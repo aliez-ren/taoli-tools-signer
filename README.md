@@ -12,13 +12,14 @@ see [example.keychain.toml](example.keychain.toml)
 
 ## Deploy to Cloudflare Workers
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Faliez-ren%2Ftaoli-tools-signer)
-
-- https://developers.cloudflare.com/workers/configuration/secrets/
+1. Click [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Faliez-ren%2Ftaoli-tools-signer)
+2. Add secret `KEYCHAIN` to Worker: https://developers.cloudflare.com/workers/configuration/secrets/#via-the-dashboard
 
 ## Deploy to Docker Container
 
 ```bash
+docker swarm init
+
 cat keychain.toml | docker secret create KEYCHAIN -
 
 docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest \
