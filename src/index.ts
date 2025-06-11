@@ -1,18 +1,10 @@
-import { HDKey } from '@scure/bip32'
-import { mnemonicToSeed } from '@scure/bip39'
-import {
-  createKeyPairSignerFromPrivateKeyBytes,
-  getTransactionCodec,
-  signTransaction,
-} from '@solana/kit'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import slip10 from 'micro-key-producer/slip10.js'
 import { parse } from 'smol-toml'
-import { fromHex, parseTransaction, toHex } from 'viem'
-import { hdKeyToAccount } from 'viem/accounts'
 import type { z } from 'zod/v4'
 import { hmacSha256 } from './hmac'
+import { EVM } from './platforms/evm'
+import { SVM } from './platforms/svm'
 import { type accountSchema, accountsSchema, platformSchame } from './schema'
 
 type Bindings = {
@@ -76,45 +68,23 @@ app.get('/', (c) => {
 app.get('/:account/:platform', async (c) => {
   const account = c.get('account')
   const platform = platformSchame.parse(c.req.param('platform'))
-  const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
-  if (platform === 'evm') {
-    const { address } = hdKeyToAccount(HDKey.fromMasterSeed(seed))
-    return c.text(address)
-  }
-  if (platform === 'svm') {
-    const { privateKey } = slip10
-      .fromMasterSeed(seed)
-      .derive(`m/44'/501'/0'/0'`)
-    const { address } = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
-    return c.text(address)
-  }
-  return c.text('Wrong platform', 400)
+  const { address } = await { EVM, SVM }[platform](
+    account.mnemonic,
+    account.passphrase,
+  )
+  return c.text(address)
 })
 
 app.post('/:account/:platform', async (c) => {
   const account = c.get('account')
-  const body = c.get('body')
+  const transaction = c.get('body')
   const platform = platformSchame.parse(c.req.param('platform'))
-  const seed = await mnemonicToSeed(account.mnemonic, account.passphrase)
-  if (platform === 'evm') {
-    const account = hdKeyToAccount(HDKey.fromMasterSeed(seed))
-    const transaction = parseTransaction(toHex(body))
-    const signedTransaction = await account.signTransaction(transaction)
-    return c.body(fromHex(signedTransaction, 'bytes'))
-  }
-  if (platform === 'svm') {
-    const { privateKey } = slip10
-      .fromMasterSeed(seed)
-      .derive(`m/44'/501'/0'/0'`)
-    const { keyPair } = await createKeyPairSignerFromPrivateKeyBytes(privateKey)
-    const transactionCodec = getTransactionCodec()
-    const transaction = await signTransaction(
-      [keyPair],
-      transactionCodec.decode(body),
-    )
-    return c.body(new Uint8Array(transactionCodec.encode(transaction)))
-  }
-  return c.text('Wrong platform', 400)
+  const { signTransaction } = await { EVM, SVM }[platform](
+    account.mnemonic,
+    account.passphrase,
+  )
+  const signedTransaction = await signTransaction(transaction)
+  return c.body(signedTransaction)
 })
 
 export default app

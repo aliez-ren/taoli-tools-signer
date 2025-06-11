@@ -8,4 +8,4 @@ export const accountSchema = z.object({
 
 export const accountsSchema = z.record(z.string(), accountSchema)
 
-export const platformSchame = z.enum(['evm', 'svm'])
+export const platformSchame = z.enum(['EVM', 'SVM'])
