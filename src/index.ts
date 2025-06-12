@@ -1,7 +1,8 @@
-import { Hono } from 'hono'
+import { type Context, Hono } from 'hono'
 import { getRuntimeKey } from 'hono/adapter'
 import { getConnInfo as getWorkerdConnInfo } from 'hono/cloudflare-workers'
 import { cors } from 'hono/cors'
+import type { BlankInput } from 'hono/types'
 import { parse } from 'smol-toml'
 import type { z } from 'zod/v4'
 import { TTSError } from './error'
@@ -44,15 +45,7 @@ app.use('/*', async (c, next) => {
 })
 
 app.use('/:key/*', async (c, next) => {
-  const keychain = keychainSchema.parse(
-    parse(
-      runtimeKey === 'workerd'
-        ? c.env.KEYCHAIN
-        : runtimeKey === 'bun' && typeof Bun !== 'undefined'
-          ? await Bun.file('/run/secrets/KEYCHAIN').text()
-          : '',
-    ),
-  )
+  const keychain = await getKeyChain(c)
   const key = keychain[c.req.param('key')]
   if (!key) {
     return c.text('TTS: Key not found', 404)
@@ -90,6 +83,11 @@ app.use('/:key/*', async (c, next) => {
   return await next()
 })
 
+app.get('/', async (c) => {
+  const keychain = await getKeyChain(c)
+  return c.text(`KEYCHAIN: ${Object.keys(keychain).length}`)
+})
+
 app.get('/:key/:platform', async (c) => {
   const key = c.get('key')
   const platform = platformSchema.parse(c.req.param('platform'))
@@ -108,5 +106,19 @@ app.post('/:key/:platform', async (c) => {
   const signedTransaction = await signTransaction(transaction)
   return c.body(signedTransaction)
 })
+
+async function getKeyChain(
+  c: Context<{ Bindings: Bindings }, '/', BlankInput>,
+) {
+  return keychainSchema.parse(
+    parse(
+      runtimeKey === 'workerd'
+        ? c.env.KEYCHAIN
+        : runtimeKey === 'bun' && typeof Bun !== 'undefined'
+          ? await Bun.file('/run/secrets/KEYCHAIN').text()
+          : '',
+    ),
+  )
+}
 
 export default app
