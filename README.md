@@ -80,10 +80,10 @@ Two deployment methods, choose one on your own.
 
 7. Pull docker image and run.
    ```bash
-   docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest \
-     && docker service rm taoli-tools-signer \
-     && docker service create --name=taoli-tools-signer --secret=KEYCHAIN -p=443:443 ghcr.io/aliez-ren/taoli-tools-signer:latest \
-     && docker service logs -f taoli-tools-signer
+   docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest
+   docker service rm taoli-tools-signer
+   docker service create --name=taoli-tools-signer --secret=KEYCHAIN --secret=CERT.pem --secret=KEY.pem -p=443:443 ghcr.io/aliez-ren/taoli-tools-signer:latest
+   docker service logs -f taoli-tools-signer
    ```
 
 5. In this case, `Signer URL` is `https://localhost/your-api-key` and `Signer Secret` is `your api secret`.

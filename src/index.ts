@@ -126,8 +126,8 @@ export default runtimeKey === 'bun' && typeof Bun !== 'undefined'
       port: 443,
       fetch: app.fetch,
       tls: {
-        cert: Bun.file('./CERT.pem'),
-        key: Bun.file('./KEY.pem'),
+        cert: Bun.file('/run/secrets/CERT.pem'),
+        key: Bun.file('/run/secrets/KEY.pem'),
       },
     }
   : app
