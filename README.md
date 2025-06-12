@@ -52,13 +52,13 @@ Two deployment methods, choose one on your own.
    docker swarm init
    ```
 
-2. Prepare the `keychain.toml` file and store it into docker secret.
+2. Prepare `keychain.toml` and store it into docker secret.
    ```bash
    cat keychain.toml | docker secret create KEYCHAIN -
    ```
 
-3. Delete the keychain file for security.
-   ⚠️WARNING: backup mnemonic before deletion.
+3. Delete `keychain.toml` for security.
+   ⚠️WARNING: backup before deletion.
    ```bash
    rm keychain.toml 
    ```
@@ -70,9 +70,15 @@ Two deployment methods, choose one on your own.
    cat KEY.pem | docker secret create KEY.pem -
    ```
 
-5. Trust `CERT.pem` in your browser. chrome://certificate-manager/localcerts/usercerts
+5. Delete `KEY.pem` for security.
+   ⚠️WARNING: backup before deletion.
+   ```bash
+   rm KEY.pem
+   ```
 
-6. Pull docker image and run.
+6. Trust `CERT.pem` in your browser. chrome://certificate-manager/localcerts/usercerts
+
+7. Pull docker image and run.
    ```bash
    docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest \
      && docker service rm taoli-tools-signer \
