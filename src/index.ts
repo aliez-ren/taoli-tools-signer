@@ -121,4 +121,13 @@ async function getKeyChain(
   )
 }
 
-export default app
+export default runtimeKey === 'bun' && typeof Bun !== 'undefined'
+  ? {
+      port: 443,
+      fetch: app.fetch,
+      tls: {
+        cert: Bun.file('./CERT.pem'),
+        key: Bun.file('./KEY.pem'),
+      },
+    }
+  : app

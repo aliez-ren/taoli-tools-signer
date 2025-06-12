@@ -63,15 +63,24 @@ Two deployment methods, choose one on your own.
    rm keychain.toml 
    ```
 
-4. Pull docker image and run.
+4. Generate self-signed TLS certificate and store it into docker secret.
+   ```bash
+   openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -subj /CN=localhost -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1' -out CERT.pem -keyout KEY.pem
+   cat CERT.pem | docker secret create CERT.pem -
+   cat KEY.pem | docker secret create KEY.pem -
+   ```
+
+5. Trust `CERT.pem` in your browser. chrome://certificate-manager/localcerts/usercerts
+
+6. Pull docker image and run.
    ```bash
    docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest \
      && docker service rm taoli-tools-signer \
-     && docker service create --name=taoli-tools-signer --secret=KEYCHAIN -p=3000:3000 ghcr.io/aliez-ren/taoli-tools-signer:latest \
+     && docker service create --name=taoli-tools-signer --secret=KEYCHAIN -p=443:443 ghcr.io/aliez-ren/taoli-tools-signer:latest \
      && docker service logs -f taoli-tools-signer
    ```
 
-5. In this case, `Signer URL` is `http://127.0.0.1:3000/your-api-key` and `Signer Secret` is `your api secret`.
+5. In this case, `Signer URL` is `https://localhost/your-api-key` and `Signer Secret` is `your api secret`.
 
 ## Work with Taoli Tools
 
