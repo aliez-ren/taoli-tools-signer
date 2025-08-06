@@ -32,6 +32,7 @@ import {
   metis,
   mode,
   okc,
+  opBNB,
   optimism,
   polygon,
   polygonZkEvm,
@@ -206,4 +207,16 @@ const allowlist: Record<Address, Set<number>> = {
   '0x5615CDAb10dc425a742d643d949a7F474C01abc4': new Set([celo.id]),
   '0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6': new Set([worldchain.id]),
   '0x7De04c96BE5159c3b5CeffC82aa176dc81281557': new Set([zora.id]),
+
+  // https://developer.pancakeswap.finance/contracts/v3/addresses
+  '0x1b81D678ffb9C0263b24A97847620C99d213eB14': new Set([
+    bsc.id,
+    ethereum.id,
+    polygonZkEvm.id,
+    arbitrum.id,
+    linea.id,
+    base.id,
+    opBNB.id,
+  ]),
+  '0xD70C70AD87aa8D45b8D59600342FB3AEe76E3c68': new Set([zksync.id]),
 }
