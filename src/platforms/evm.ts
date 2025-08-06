@@ -17,6 +17,7 @@ import {
   base,
   blast,
   bsc,
+  celo,
   confluxESpace,
   cronos,
   mainnet as ethereum,
@@ -38,9 +39,11 @@ import {
   sei,
   sonic,
   unichain,
+  worldchain,
   xLayer,
   zetachain,
   zksync,
+  zora,
 } from 'viem/chains'
 import { TTSError } from '../error'
 import type { Platform } from '../type'
@@ -186,4 +189,21 @@ const allowlist: Record<Address, Set<number>> = {
   '0x88de50B233052e4Fb783d4F6db78Cc34fEa3e9FC': new Set([avalanche.id]),
   '0x2d8879046f1559E53eb052E949e9544bCB72f414': new Set([linea.id]),
   '0xbFe03C9E20a9Fc0b37de01A172F207004935E0b1': new Set([scroll.id]),
+
+  // https://docs.uniswap.org/contracts/v3/reference/deployments/
+  '0xbb00FF08d01D300023C629E8fFfFcb65A5a578cE': new Set([avalanche.id]),
+  '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45': new Set([
+    arbitrum.id,
+    ethereum.id,
+    optimism.id,
+    polygon.id,
+  ]),
+  '0xB971eF87ede563556b2ED4b1C0b0019111Dd85d2': new Set([bsc.id]),
+  '0x2626664c2603336E57B271c5C0b26F421741e481': new Set([base.id]),
+  '0x99c56385daBCE3E81d8499d0b8d0257aBC07E8A3': new Set([zksync.id]),
+  '0x73855d06DE49d0fe4A9c42636Ba96c62da12FF9C': new Set([unichain.id]),
+  '0x549FEB8c9bd4c12Ad2AB27022dA12492aC452B66': new Set([blast.id]),
+  '0x5615CDAb10dc425a742d643d949a7F474C01abc4': new Set([celo.id]),
+  '0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6': new Set([worldchain.id]),
+  '0x7De04c96BE5159c3b5CeffC82aa176dc81281557': new Set([zora.id]),
 }
