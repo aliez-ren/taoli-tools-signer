@@ -78,16 +78,20 @@ Two deployment methods, choose one on your own.
 
 6. Trust `CERT.pem` in your browser. chrome://certificate-manager/localcerts/usercerts
 
-7. Pull docker image and run.
+7. Create internal network
+   ```bash
+   docker network create --driver overlay --internal nonet
+   ```
+
+8. Pull docker image and run.
    ```bash
    docker pull ghcr.io/aliez-ren/taoli-tools-signer:latest
    docker service rm taoli-tools-signer
-   docker network create --driver overlay --internal nonet
    docker service create --name=taoli-tools-signer --secret=KEYCHAIN --secret=CERT.pem --secret=KEY.pem -p=443:443 --network nonet ghcr.io/aliez-ren/taoli-tools-signer:latest
    docker service logs -f taoli-tools-signer
    ```
 
-5. In this case, `Signer URL` is `https://localhost/your-api-key` and `Signer Secret` is `your api secret`.
+9. In this case, `Signer URL` is `https://localhost/your-api-key` and `Signer Secret` is `your api secret`.
 
 ## Work with Taoli Tools
 
