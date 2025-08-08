@@ -89,45 +89,49 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
 
 const allowlist: Record<Address, Set<number>> = {
   // https://web3.okx.com/build/dev-docs/dex-api/dex-smart-contract#dex-router
-  '0xDd5E9B947c99Aa60bab00ca4631Dce63b49983E7': new Set([ethereum.id]),
-  '0x8feB9E84b7E9DC86adc6cD6Eb554C5B4355c8405': new Set([sonic.id, mode.id]),
-  '0x108bfC6aa49718a1f9669FC0Ccd1a21d0D30c8E0': new Set([zksync.id]),
-  '0x06f183D52D92c13a5f2B989B8710BA7F00bd6f87': new Set([
+  '0x2E1Dee213BA8d7af0934C49a23187BabEACa8764': new Set([ethereum.id]),
+  '0x8feB9E84b7E9DC86adc6cD6Eb554C5B4355c8405': new Set([sonic.id]),
+  '0x010BC6B1014E5ed8284ab0667b116AAb99588159': new Set([zksync.id]),
+  '0x86F752f1F662f39BFbcBeF95EE56B6C20d178969': new Set([
     optimism.id,
     scroll.id,
   ]),
-  '0x6733Eb2E75B1625F1Fe5f18aD2cB2BaBDA510d19': new Set([
+  '0xF5402CCC5fC3181B45D7571512999D3Eea0257B6': new Set([
     polygon.id,
+    confluxESpace.id,
+    polygonZkEvm.id,
+  ]),
+  '0x6015126d7D23648C2e4466693b8DeaB005ffaba8': new Set([bsc.id]),
+  '0x69C236E021F5775B0D0328ded5EaC708E3B869DF': new Set([
     okc.id,
-    avalanche.id,
     mantle.id,
     blast.id,
     merlin.id,
     xLayer.id,
     sei.id,
   ]),
-  '0xA2604105e84DAe6eccEa41E61123AB8d9B3AfD75': new Set([bsc.id]),
-  '0x79f7C6C6dc16Ed3154E85A8ef9c1Ef31CEFaEB19': new Set([fantom.id, cronos.id]),
-  '0x69C236E021F5775B0D0328ded5EaC708E3B869DF': new Set([
+  '0x79f7C6C6dc16Ed3154E85A8ef9c1Ef31CEFaEB19': new Set([avalanche.id]),
+  '0x5e2F47bD7D4B357fCfd0Bb224Eb665773B1B9801': new Set([
+    fantom.id,
     arbitrum.id,
-    confluxESpace.id,
     base.id,
-    polygonZkEvm.id,
   ]),
-  '0xcF76984119C7f6ae56fAfE680d39C08278b7eCF4': new Set([linea.id]),
-  '0x7A7AD9aa93cd0A2D0255326E5Fb145CEc14997FF': new Set([
-    manta.id,
+  '0x6f7c20464258c732577c87a9B467619e03e5C158': new Set([linea.id]),
+  '0xd30D8CA2E7715eE6804a287eB86FAfC0839b1380': new Set([manta.id]),
+  '0xcF76984119C7f6ae56fAfE680d39C08278b7eCF4': new Set([metis.id]),
+  '0xcc96b656b6dff0B5318d53271b82B7E7183b95D2': new Set([
     zetachain.id,
+    mode.id,
+    sonic.id,
   ]),
-  '0xC589a4eD6A9fc3354d7eeF88bA87b51AFC272783': new Set([metis.id]),
-  '0x9FD43F5E4c24543b2eBC807321E58e6D350d6a5A': new Set([unichain.id]),
+  '0x411d2C093e4c2e69Bf0D8E94be1bF13DaDD879c6': new Set([unichain.id]),
+  '0xC589a4eD6A9fc3354d7eeF88bA87b51AFC272783': new Set([cronos.id]),
 
   // https://web3.okx.com/build/dev-docs/dex-api/dex-smart-contract#token-approval
   '0x40aA958dd87FC8305b97f2BA922CDdCa374bcD7f': new Set([
     ethereum.id,
     avalanche.id,
   ]),
-  '0xd321ab5589d3e8fa5df985ccfef625022e2dd910': new Set([sonic.id]),
   '0xc67879F4065d3B9fe1C09EE990B891Aa8E3a4c2f': new Set([zksync.id]),
   '0x68D6B739D2020067D1e2F713b999dA97E4d54812': new Set([
     optimism.id,
