@@ -11,6 +11,8 @@ Supports multiple EVM chains and Solana.
 - Contract allowlist
 
 ## Supported DEXs
+- [Uniswap](https://app.uniswap.org/swap)
+- [PancakeSwap](https://pancakeswap.finance/swap)
 - [1inch](https://app.1inch.io/)
 - [Jupiter](https://jup.ag/)
 - [Odos](https://app.odos.xyz/)
@@ -60,7 +62,7 @@ Two deployment methods, choose one on your own.
 3. Delete `keychain.toml` for security.
    ⚠️WARNING: backup before deletion.
    ```bash
-   rm keychain.toml 
+   rm keychain.toml
    ```
 
 4. Generate self-signed TLS certificate and store it into docker secret.
