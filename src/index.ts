@@ -9,7 +9,7 @@ import { TTSError } from './error'
 import { hmacSha256 } from './hmac'
 import { EVM } from './platforms/evm'
 import { SVM } from './platforms/svm'
-import { type keySchema, keychainSchema, platformSchema } from './schema'
+import { keychainSchema, type keySchema, platformSchema } from './schema'
 
 type Bindings = {
   KEYCHAIN: string
@@ -37,10 +37,7 @@ app.use('/*', async (c, next) => {
   try {
     return await next()
   } catch (err) {
-    return c.text(
-      `TTS: ${err instanceof TTSError ? err.message : 'Server error'}`,
-      500,
-    )
+    return c.text(`TTS: ${err instanceof TTSError ? err.message : 'Server error'}`, 500)
   }
 })
 
@@ -64,17 +61,12 @@ app.use('/:key/*', async (c, next) => {
         : undefined
   const info = getConnInfo?.(c)
   const ips = typeof key.ip === 'string' ? [key.ip] : (key.ip ?? [])
-  if (
-    ips.length > 0 &&
-    (!info || !ips.find((ip) => ip === info.remote.address))
-  ) {
+  if (ips.length > 0 && (!info || !ips.find((ip) => ip === info.remote.address))) {
     return c.text('TTS: Restricted IP', 403)
   }
 
   const body = await c.req.arrayBuffer()
-  if (
-    sig !== Buffer.from(await hmacSha256(key.secret, body)).toString('base64')
-  ) {
+  if (sig !== Buffer.from(await hmacSha256(key.secret, body)).toString('base64')) {
     return c.text('TTS: Wrong signature', 403)
   }
 
@@ -99,17 +91,12 @@ app.post('/:key/:platform', async (c) => {
   const key = c.get('key')
   const transaction = c.get('body')
   const platform = platformSchema.parse(c.req.param('platform'))
-  const { signTransaction } = await { EVM, SVM }[platform](
-    key.mnemonic,
-    key.passphrase,
-  )
+  const { signTransaction } = await { EVM, SVM }[platform](key.mnemonic, key.passphrase)
   const signedTransaction = await signTransaction(transaction)
   return c.body(signedTransaction)
 })
 
-async function getKeyChain(
-  c: Context<{ Bindings: Bindings }, '/', BlankInput>,
-) {
+async function getKeyChain(c: Context<{ Bindings: Bindings }, '/', BlankInput>) {
   return keychainSchema.parse(
     parse(
       runtimeKey === 'workerd'
