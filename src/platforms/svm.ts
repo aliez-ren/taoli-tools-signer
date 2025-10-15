@@ -5,6 +5,8 @@ import {
   getCompiledTransactionMessageCodec,
   getTransactionCodec,
   signTransaction,
+  type Transaction,
+  type TransactionWithLifetime,
 } from '@solana/kit'
 import slip10 from 'micro-key-producer/slip10.js'
 import { TTSError } from '../error'
@@ -22,7 +24,7 @@ export const SVM: Platform<Address> = async (mnemonic, passphrase) => {
   return {
     address,
     async signTransaction(transaction) {
-      const tx = transactionCodec.decode(transaction)
+      const tx = transactionCodec.decode(transaction) as Transaction & TransactionWithLifetime
 
       const { instructions, staticAccounts } = compiledTransactionMessageCodec.decode(
         tx.messageBytes,

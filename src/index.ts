@@ -93,7 +93,7 @@ app.post('/:key/:platform', async (c) => {
   const platform = platformSchema.parse(c.req.param('platform'))
   const { signTransaction } = await { EVM, SVM }[platform](key.mnemonic, key.passphrase)
   const signedTransaction = await signTransaction(transaction)
-  return c.body(signedTransaction)
+  return c.body(new Uint8Array(signedTransaction))
 })
 
 async function getKeyChain(c: Context<{ Bindings: Bindings }, '/', BlankInput>) {

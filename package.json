@@ -5,20 +5,21 @@
   "private": true,
   "scripts": {
     "dev": "wrangler dev src/index.ts",
+    "typecheck": "wrangler types && tsc",
     "format": "biome check --write ."
   },
   "dependencies": {
-    "@solana/kit": "2.1.1",
-    "hono": "4.7.11",
-    "micro-key-producer": "0.7.6",
-    "smol-toml": "1.3.4",
+    "@solana/kit": "4.0.0",
+    "hono": "4.9.12",
+    "micro-key-producer": "0.8.2",
+    "smol-toml": "1.4.2",
     "viem": "2.38.2",
-    "zod": "3.25.56"
+    "zod": "4.1.12"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.6",
-    "@types/bun": "1.2.15",
-    "typescript": "5.8.3",
-    "wrangler": "4.19.1"
+    "@types/bun": "1.3.0",
+    "typescript": "5.9.3",
+    "wrangler": "4.43.0"
   }
 }

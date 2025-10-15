@@ -34,6 +34,7 @@ import {
   okc,
   opBNB,
   optimism,
+  plasma,
   polygon,
   polygonZkEvm,
   scroll,
@@ -45,7 +46,6 @@ import {
   zetachain,
   zksync,
   zora,
-  plasma
 } from 'viem/chains'
 import { TTSError } from '../error'
 import type { Platform } from '../type'
