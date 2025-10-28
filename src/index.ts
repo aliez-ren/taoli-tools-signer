@@ -30,6 +30,8 @@ app.use(
   '/*',
   cors({
     origin: ['http://localhost:5173', 'https://taoli.tools'],
+    allowHeaders: ['X-SIG'],
+    allowMethods: ['OPTIONS', 'GET', 'POST'],
   }),
 )
 
