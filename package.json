@@ -12,6 +12,7 @@
     "@solana/kit": "4.0.0",
     "hono": "4.9.12",
     "micro-key-producer": "0.8.2",
+    "remeda": "2.32.0",
     "smol-toml": "1.4.2",
     "viem": "2.38.2",
     "zod": "4.1.12"
