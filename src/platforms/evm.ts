@@ -174,6 +174,21 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x2d8879046f1559E53eb052E949e9544bCB72f414': new Set([linea.id]),
     '0xbFe03C9E20a9Fc0b37de01A172F207004935E0b1': new Set([scroll.id]),
 
+    // https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments
+    '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D': new Set([ethereum.id]),
+    '0x284f11109359a7e1306c3e447ef14d38400063ff': new Set([unichain.id]),
+    '0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24': new Set([
+      arbitrum.id,
+      avalanche.id,
+      bsc.id,
+      base.id,
+    ]),
+    '0x4A7b5Da61326A6379179b40d00F57E5bbDC962c2': new Set([optimism.id]),
+    '0xedf6066a2b290C185783862C7F4776A2C8077AD1': new Set([polygon.id]),
+    '0xBB66Eb1c5e875933D44DAe661dbD80e5D9B03035': new Set([blast.id]),
+    '0xa00F34A632630EFd15223B1968358bA4845bEEC7': new Set([zora.id]),
+    '0x541aB7c31A119441eF3575F6973277DE0eF460bd': new Set([worldchain.id]),
+
     // https://docs.uniswap.org/contracts/v3/reference/deployments/
     '0xbb00FF08d01D300023C629E8fFfFcb65A5a578cE': new Set([avalanche.id]),
     '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45': new Set([
@@ -191,6 +206,18 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6': new Set([worldchain.id]),
     '0x7De04c96BE5159c3b5CeffC82aa176dc81281557': new Set([zora.id]),
 
+    // https://developer.pancakeswap.finance/contracts/v2/addresses
+    '0x10ED43C718714eb63d5aA57B78B54704E256024E': new Set([bsc.id]),
+    '0xEfF92A263d31888d860bD50809A8D171709b7b1c': new Set([ethereum.id]),
+    '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb': new Set([
+      polygonZkEvm.id,
+      arbitrum.id,
+      linea.id,
+      base.id,
+      opBNB.id,
+    ]),
+    '0x5aEaF2883FBf30f3D62471154eDa3C0c1b05942d': new Set([zksync.id]),
+
     // https://developer.pancakeswap.finance/contracts/v3/addresses
     '0x1b81D678ffb9C0263b24A97847620C99d213eB14': new Set([
       bsc.id,
@@ -202,6 +229,9 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       opBNB.id,
     ]),
     '0xD70C70AD87aa8D45b8D59600342FB3AEe76E3c68': new Set([zksync.id]),
+
+    // https://github.com/aerodrome-finance/contracts
+    '0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43': new Set([base.id]),
   },
   (key) => getAddress(key),
 )

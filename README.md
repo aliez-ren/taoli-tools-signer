@@ -10,9 +10,10 @@ Supports multiple EVM chains and Solana.
 - IP restriction
 - Contract allowlist
 
-## Supported DEXs
+## Supported DEXs & Aggregators
 - [Uniswap](https://app.uniswap.org/swap)
 - [PancakeSwap](https://pancakeswap.finance/swap)
+- [Aerodrome](https://aerodrome.finance/swap)
 - [1inch](https://app.1inch.io/)
 - [Jupiter](https://jup.ag/)
 - [Odos](https://app.odos.xyz/)
