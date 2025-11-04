@@ -11,11 +11,14 @@
     "scure",
     "smol",
     "solana",
+    "soneium",
     "taoli",
     "unichain",
     "viem",
     "workerd",
+    "worldchain",
     "zetachain",
-    "zksync"
+    "zksync",
+    "zora"
   ]
 }
