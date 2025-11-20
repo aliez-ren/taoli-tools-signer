@@ -237,7 +237,7 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       soneium.id,
       avalanche.id,
       bsc.id,
-      celo.id
+      celo.id,
     ]),
 
     // https://developer.pancakeswap.finance/contracts/v2/addresses
@@ -263,6 +263,22 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       opBNB.id,
     ]),
     '0xD70C70AD87aa8D45b8D59600342FB3AEe76E3c68': new Set([zksync.id]),
+
+    // https://developer.pancakeswap.finance/contracts/infinity/resources/addresses
+    '0xd9c500dff816a1da21a48a732d3498bf09dc9aeb': new Set([bsc.id, base.id]),
+
+    // https://developer.pancakeswap.finance/contracts/permit2/addresses
+    '0x31c2F6fcFf4F8759b3Bd5Bf0e1084A055615c768': new Set([
+      bsc.id,
+      ethereum.id,
+      arbitrum.id,
+      base.id,
+      linea.id,
+      opBNB.id,
+      polygonZkEvm.id,
+      scroll.id,
+    ]),
+    '0x686FD50007EaA636F01154d660b96110B6bFe351': new Set([zksync.id]),
 
     // https://github.com/aerodrome-finance/contracts
     '0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43': new Set([base.id]),
