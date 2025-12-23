@@ -20,5 +20,6 @@
     "zetachain",
     "zksync",
     "zora"
-  ]
+  ],
+  "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix"
 }
