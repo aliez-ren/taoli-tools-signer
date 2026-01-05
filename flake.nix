@@ -1,22 +1,33 @@
 {
-  description = "Bun dev environment";
+  description = "Dev environment";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   };
 
   outputs =
     { self, nixpkgs }:
     let
-      system = "x86_64-linux";
-      pkgs = import nixpkgs { inherit system; };
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+
+      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in
     {
-      devShells.${system}.default = pkgs.mkShell {
-        packages = with pkgs; [
-          bun
-          nodejs
-        ];
-      };
+      devShells = forAllSystems (system: {
+        default = nixpkgsFor.${system}.mkShell {
+          packages = with nixpkgsFor.${system}; [
+            bun
+            nodejs
+            biome
+            wrangler
+            typescript-go
+          ];
+        };
+      });
     };
 }
