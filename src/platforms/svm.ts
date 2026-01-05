@@ -47,7 +47,7 @@ const allowlist = new Set([
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
 
   // https://web3.okx.com/zh-hans/build/dev-docs/dex-api/dex-smart-contract
-  '6m2CDdhRgxpH4WjvdzxAYbGxwdGUz5MziiL5jek2kBma',
+  'proVF4pMXVaYqmy4NjniPh4pqKNfMmsihgd4wdkCX3u',
 
   // https://dev.jup.ag/docs/old/additional-topics/links-and-contract-addresses
   'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
