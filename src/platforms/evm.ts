@@ -94,7 +94,7 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
 const allowlist: Record<Address, Set<number>> = mapKeys(
   {
     // https://web3.okx.com/build/dev-docs/dex-api/dex-smart-contract#dex-router
-    '0x5E1f62Dac767b0491e3CE72469C217365D5B48cC': new Set([ethereum.id, avalanche.id]),
+    '0x5E1f62Dac767b0491e3CE72469C217365D5B48cC': new Set([ethereum.id]),
     '0x86F752f1F662f39BFbcBeF95EE56B6C20d178969': new Set([sonic.id]),
     '0x3163Ed233a3Cb5E6B7F10A6f02b01F15867a8779': new Set([zksync.id]),
     '0x6733Eb2E75B1625F1Fe5f18aD2cB2BaBDA510d19': new Set([optimism.id, scroll.id]),
@@ -115,6 +115,13 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x0efa3a01eb0708f9e40b661c6cd7c56c83b9f45a': new Set([xLayer.id]),
     '0x5c1c902e7e04de98b49acd3de68e12bee2d7908d': new Set([plasma.id]),
     '0x6088d94C5a40CEcd3ae2D4e0710cA687b91c61d0': new Set([monad.id]),
+
+    // https://web3.okx.com/build/dev-docs/dex-api/dex-smart-contract#dex-router
+    // DEX Router Addresses for OKX DEX used in signing exactOut transactions
+    '0xa875Fb2204cE71679BE054d97f7fAFFeb6536D67': new Set([ethereum.id]),
+    '0x77449Ff075C0A385796Da0762BCB46fd5cc884c6': new Set([base.id]),
+    '0x5cb43Bae4f36E2f9f858232B4Dce0dbE27bb85e3': new Set([bsc.id]),
+    '0x9736d9a45115E33411390EbD54e5A5C3A6E25aA6': new Set([arbitrum.id]),
 
     // https://web3.okx.com/build/dev-docs/dex-api/dex-smart-contract#token-approval
     '0x40aA958dd87FC8305b97f2BA922CDdCa374bcD7f': new Set([ethereum.id, avalanche.id]),
