@@ -49,15 +49,14 @@ import {
   zetachain,
   zksync,
   zora,
+  megaeth,
+  tempo,
 } from 'viem/chains'
 
 import { TTSError } from '../error'
 import type { Platform } from '../type'
 
 const robinhood = { id: 4663 }
-// viem 2.43.1 lacks these mainnets; ids match taoli-tools (viem 2.47.6)
-const megaeth = { id: 4326 }
-const tempo = { id: 4217 }
 
 export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
   const seed = await mnemonicToSeed(mnemonic, passphrase)
