@@ -5,6 +5,7 @@ import { cors } from 'hono/cors'
 import memoize from 'memoize'
 import { parse } from 'smol-toml'
 import type { z } from 'zod/v4'
+
 import { TTSError } from './error'
 import { hmacSha256 } from './hmac'
 import { EVM } from './platforms/evm'

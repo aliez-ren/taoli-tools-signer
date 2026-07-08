@@ -9,6 +9,7 @@ import {
   type TransactionWithLifetime,
 } from '@solana/kit'
 import slip10 from 'micro-key-producer/slip10.js'
+
 import { TTSError } from '../error'
 import type { Platform } from '../type'
 

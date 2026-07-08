@@ -1,0 +1,20 @@
+{
+  "$schema": "https://unpkg.com/oxlint@1.60.0/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc"],
+  "categories": {
+    "correctness": "error"
+  },
+  "rules": {
+    "radix": "off",
+    "no-param-reassign": "error",
+    "default-param-last": "error",
+    "no-inferrable-types": "error",
+    "no-else-return": "error",
+    "no-explicit-any": "warn",
+    "no-single-promise-in-promise-methods": "off"
+  },
+  "env": {
+    "builtin": true
+  },
+  "ignorePatterns": ["worker-configuration.d.ts"]
+}

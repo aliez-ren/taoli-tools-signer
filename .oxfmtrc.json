@@ -1,0 +1,16 @@
+{
+  "$schema": "https://unpkg.com/oxfmt@0.45.0/configuration_schema.json",
+  "useTabs": false,
+  "sortImports": true,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "quoteProps": "as-needed",
+  "trailingComma": "all",
+  "semi": false,
+  "arrowParens": "always",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "ignorePatterns": ["worker-configuration.d.ts"]
+}

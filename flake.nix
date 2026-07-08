@@ -19,8 +19,10 @@
         devShells.default = pkgs.mkShell {
           buildInputs = with pkgs; [
             bun
-            biome
             nodejs
+            prek
+            oxfmt
+            oxlint
             wrangler
             typescript-go
           ];

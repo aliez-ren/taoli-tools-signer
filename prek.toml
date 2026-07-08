@@ -1,0 +1,27 @@
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "oxfmt"
+name = "oxfmt"
+language = "system"
+entry = "oxfmt --write"
+types_or = ["javascript", "jsx", "tsx", "ts", "json", "yaml", "toml", "css", "html", "markdown"]
+priority = 0
+
+[[repos.hooks]]
+id = "oxlint"
+name = "oxlint"
+language = "system"
+entry = "oxlint --fix --deny-warnings"
+types_or = ["javascript", "jsx", "tsx", "ts"]
+priority = 10
+
+[[repos.hooks]]
+id = "tsgo-check"
+name = "tsgo type check"
+language = "system"
+entry = "tsgo --noEmit"
+types_or = ["ts", "tsx"]
+pass_filenames = false
+priority = 20

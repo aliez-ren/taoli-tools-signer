@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "wrangler dev src/index.ts",
     "typecheck": "wrangler types && tsgo",
-    "format": "biome check --write ."
+    "fmt": "oxfmt --write .",
+    "lint": "oxlint . --fix --deny-warnings",
+    "prepare": "command -v prek >/dev/null 2>&1 && prek install || true"
   },
   "dependencies": {
     "@solana/kit": "4.0.0",
