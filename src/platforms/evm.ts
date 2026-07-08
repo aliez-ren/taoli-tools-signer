@@ -53,6 +53,11 @@ import {
 import { TTSError } from '../error'
 import type { Platform } from '../type'
 
+const robinhood = { id: 4663 }
+// viem 2.43.1 lacks these mainnets; ids match taoli-tools (viem 2.47.6)
+const megaeth = { id: 4326 }
+const tempo = { id: 4217 }
+
 export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
   const seed = await mnemonicToSeed(mnemonic, passphrase)
   const account = hdKeyToAccount(HDKey.fromMasterSeed(seed))
@@ -201,6 +206,9 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x541aB7c31A119441eF3575F6973277DE0eF460bd': new Set([worldchain.id]),
     '0x4b2ab38dbf28d31d467aa8993f6c2585981d6804': new Set([monad.id]),
     '0x182a927119d56008d921126764bf884221b10f59': new Set([xLayer.id]),
+    '0xb73055db2B3A3EaE87a331DD88e4a80b43602690': new Set([megaeth.id]),
+    '0x0FBac3c46F6F83B44C7fb4EA986d7309C701D73E': new Set([tempo.id]),
+    '0x89e5DB8B5aA49aA85AC63f691524311AEB649eba': new Set([robinhood.id]),
 
     // https://developers.uniswap.org/docs/protocols/v3/deployments
     '0xbb00FF08d01D300023C629E8fFfFcb65A5a578cE': new Set([avalanche.id]),
@@ -218,6 +226,11 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x5615CDAb10dc425a742d643d949a7F474C01abc4': new Set([celo.id]),
     '0x091AD9e2e6e5eD44c1c66dB50e49A601F9f36cF6': new Set([worldchain.id]),
     '0x7De04c96BE5159c3b5CeffC82aa176dc81281557': new Set([zora.id]),
+    '0xcaf681a66d020601342297493863e78c959e5cb2': new Set([robinhood.id]),
+    '0x48020De9208baFC183F5CAd5118FFbe8f0F913F5': new Set([megaeth.id]),
+    '0xfE31F71C1b106EAc32F1A19239c9a9A72ddfb900': new Set([monad.id]),
+    '0x7e9D53081e961201837336BcD81f52aE92691a8f': new Set([tempo.id]),
+    '0x4f0C28f5926AFDA16bf2506D5D9e57Ea190f9bcA': new Set([xLayer.id]),
 
     // https://docs.uniswap.org/contracts/v4/deployments
     '0x66a9893cc07d91d95644aedd05d03f95e1dba8af': new Set([ethereum.id]),
@@ -249,6 +262,7 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       avalanche.id,
       bsc.id,
       celo.id,
+      robinhood.id,
     ]),
 
     // https://developer.pancakeswap.finance/contracts/v2/addresses
@@ -260,8 +274,10 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       linea.id,
       base.id,
       opBNB.id,
+      robinhood.id,
     ]),
     '0x5aEaF2883FBf30f3D62471154eDa3C0c1b05942d': new Set([zksync.id]),
+    '0xB1Bc24c34e88f7D43D5923034E3a14B24DaACfF9': new Set([monad.id]),
 
     // https://developer.pancakeswap.finance/contracts/v3/addresses
     '0x1b81D678ffb9C0263b24A97847620C99d213eB14': new Set([
@@ -272,6 +288,8 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       linea.id,
       base.id,
       opBNB.id,
+      monad.id,
+      robinhood.id,
     ]),
     '0xD70C70AD87aa8D45b8D59600342FB3AEe76E3c68': new Set([zksync.id]),
 
