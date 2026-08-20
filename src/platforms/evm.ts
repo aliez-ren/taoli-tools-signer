@@ -155,6 +155,24 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x9FD43F5E4c24543b2eBC807321E58e6D350d6a5A': new Set([plasma.id]),
     '0xf534A8a1CAD0543Cd6438f7534CA3486c01998d4': new Set([monad.id]),
 
+    // https://web3.binance.com/en/dev-docs/catalog/web3-wallet/api/rest-api/trading-api
+    // Router and token approval share one address, deployed at the same address on every chain
+    '0xB44446b0c8E56988c34f7Ff73Ae904982b5FdDA5': new Set([
+      ethereum.id,
+      optimism.id,
+      bsc.id,
+      polygon.id,
+      monad.id,
+      sonic.id,
+      robinhood.id,
+      base.id,
+      plasma.id,
+      arbitrum.id,
+      avalanche.id,
+      linea.id,
+      scroll.id,
+    ]),
+
     // https://portal.1inch.dev/documentation/contracts/aggregation-protocol/aggregation-introduction
     '0x111111125421cA6dc452d289314280a0f8842A65': new Set([
       arbitrum.id,
