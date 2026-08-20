@@ -20,6 +20,7 @@ Supports multiple EVM chains and Solana.
 - [Jupiter](https://jup.ag/)
 - [Odos](https://app.odos.xyz/)
 - [OKX DEX](https://web3.okx.com/dex-swap)
+- [Binance Web3](https://web3.binance.com/en/swap)
 
 ## The Keychain file
 

@@ -52,4 +52,7 @@ const allowlist = new Set([
 
   // https://dev.jup.ag/get-started/index#programs
   'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+
+  // https://web3.binance.com/en/dev-docs/catalog/web3-wallet/api/rest-api/trading-api
+  'BinAnceLh73MadMEF4zdi47Q3FN2kfMuQHG3fzuhhbs5',
 ])
