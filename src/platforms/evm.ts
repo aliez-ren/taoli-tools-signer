@@ -27,6 +27,7 @@ import {
   gnosis,
   ink,
   kaia,
+  katana,
   linea,
   manta,
   mantle,
@@ -171,6 +172,7 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       avalanche.id,
       linea.id,
       scroll.id,
+      katana.id,
     ]),
 
     // https://portal.1inch.dev/documentation/contracts/aggregation-protocol/aggregation-introduction
