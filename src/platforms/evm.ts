@@ -40,6 +40,7 @@ import {
   plasma,
   polygon,
   polygonZkEvm,
+  robinhood,
   scroll,
   soneium,
   sonic,
@@ -55,8 +56,6 @@ import {
 
 import { TTSError } from '../error'
 import type { Platform } from '../type'
-
-const robinhood = { id: 4663 }
 
 const pharos = { id: 1672 }
 

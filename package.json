@@ -17,7 +17,7 @@
     "micro-key-producer": "0.8.2",
     "remeda": "2.32.0",
     "smol-toml": "1.6.1",
-    "viem": "2.54.6",
+    "viem": "2.55.19",
     "zod": "4.1.12"
   },
   "devDependencies": {
