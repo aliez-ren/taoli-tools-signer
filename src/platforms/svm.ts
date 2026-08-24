@@ -50,7 +50,7 @@ const allowlist = new Set([
   // https://web3.okx.com/onchainos/dev-docs/trade/dex-smart-contract
   'proVF4pMXVaYqmy4NjniPh4pqKNfMmsihgd4wdkCX3u',
 
-  // https://dev.jup.ag/get-started/index#programs
+  // https://developers.jup.ag/docs/get-started/index
   'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
 
   // https://web3.binance.com/en/dev-docs/catalog/web3-wallet/api/rest-api/trading-api
