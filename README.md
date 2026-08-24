@@ -18,7 +18,6 @@ Supports multiple EVM chains and Solana.
 - [Aerodrome](https://aerodrome.finance/swap)
 - [1inch](https://app.1inch.io/)
 - [Jupiter](https://jup.ag/)
-- [Odos](https://app.odos.xyz/)
 - [OKX DEX](https://web3.okx.com/dex-swap)
 - [Binance Web3](https://web3.binance.com/en/swap)
 

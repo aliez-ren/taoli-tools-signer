@@ -23,8 +23,8 @@ import {
   cronos,
   mainnet as ethereum,
   fantom,
-  fraxtal,
   gnosis,
+  hyperEvm,
   ink,
   kaia,
   katana,
@@ -33,7 +33,6 @@ import {
   mantle,
   merlin,
   metis,
-  mode,
   monad,
   okc,
   opBNB,
@@ -58,6 +57,8 @@ import { TTSError } from '../error'
 import type { Platform } from '../type'
 
 const robinhood = { id: 4663 }
+
+const pharos = { id: 1672 }
 
 export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
   const seed = await mnemonicToSeed(mnemonic, passphrase)
@@ -100,26 +101,36 @@ export const EVM: Platform<Address> = async (mnemonic, passphrase) => {
 const allowlist: Record<Address, Set<number>> = mapKeys(
   {
     // https://web3.okx.com/onchainos/dev-docs/trade/dex-smart-contract#dex-router
-    '0x28b1Dc1a5E3699A428BC51d234DFab7C9CB2a183': new Set([ethereum.id]),
-    '0x79f7C6C6dc16Ed3154E85A8ef9c1Ef31CEFaEB19': new Set([sonic.id]),
-    '0x6f7c20464258c732577c87a9B467619e03e5C158': new Set([zksync.id, polygonZkEvm.id, merlin.id]),
-    '0xDd5E9B947c99Aa60bab00ca4631Dce63b49983E7': new Set([optimism.id]),
-    '0xF6E1B4b201e220FC3741bd7a75675ffEA25c02AD': new Set([polygon.id]),
-    '0x62cceF0b4545166f721cAa9fEe13c1d3767E27dc': new Set([bsc.id]),
-    '0xa94Fcf9fc56a864f8DE51e6315aee5863AD63C91': new Set([avalanche.id]),
-    '0x25e7f77F33206d311A0130D4b5B881E5Db1181b1': new Set([fantom.id, cronos.id, metis.id]),
-    '0x7CF6b330b437E9fb432B1400DE17B03357Cf049A': new Set([arbitrum.id]),
-    '0x2E1Dee213BA8d7af0934C49a23187BabEACa8764': new Set([linea.id]),
-    '0x95418635f012fFd10eAFcDaF4137e90371f06917': new Set([confluxESpace.id]),
-    '0xC8F6b8Ba0DC0f175B568B99440B0867F69A29265': new Set([base.id]),
-    '0xcF76984119C7f6ae56fAfE680d39C08278b7eCF4': new Set([mantle.id, blast.id]),
-    '0x5e2F47bD7D4B357fCfd0Bb224Eb665773B1B9801': new Set([scroll.id]),
-    '0x69C236E021F5775B0D0328ded5EaC708E3B869DF': new Set([manta.id]),
-    '0xF5402CCC5fC3181B45D7571512999D3Eea0257B6': new Set([zetachain.id]),
-    '0x6733Eb2E75B1625F1Fe5f18aD2cB2BaBDA510d19': new Set([unichain.id]),
-    '0xbec6d0E341102732e4FD62EC50E2F0a9D1bd1D33': new Set([xLayer.id]),
-    '0x19D345f95A80cc136d898f41b490E023cFF78658': new Set([plasma.id]),
-    '0x7A7AD9aa93cd0A2D0255326E5Fb145CEc14997FF': new Set([monad.id]),
+    '0x8feab81d36e7576107d5de0758c1b839be31b4f6': new Set([ethereum.id]),
+    // Also the token approval address on Ink
+    '0xd72f9af181a0eb1b8550a00124ecdb71bb758c89': new Set([
+      sonic.id,
+      fantom.id,
+      manta.id,
+      zetachain.id,
+      merlin.id,
+      plasma.id,
+      ink.id,
+    ]),
+    '0x46eDEcEa0228f04Ab88dC34BE98314863bA40bE0': new Set([zksync.id]),
+    '0x1f5b43127414e36c31ecb5ff5567262997cd24d0': new Set([optimism.id]),
+    '0x3c4829196bfadff4394726b45159aeaac6fcd41c': new Set([polygon.id]),
+    '0x5994814f2c4040b863a0125a45de152a8c2a4dec': new Set([bsc.id]),
+    '0xab96dcfa7a7d669d9bf5918fab8641479973dd0a': new Set([avalanche.id]),
+    '0x09f94b5fc68e227c323a6fbae3bd98c97fd8c849': new Set([arbitrum.id]),
+    '0xdfcb0cecc10e78f3f3749f3f3d3ee4047b2c9829': new Set([linea.id]),
+    '0x7ae91b984da4795d9fd88419d051d0842f8d3677': new Set([confluxESpace.id]),
+    '0x67d03631fe51b741c0c00c4e16eb662ac84381df': new Set([base.id]),
+    '0x472fc4f7fd3c9f06f0b8637c5505815ac80938ad': new Set([mantle.id, metis.id, blast.id]),
+    '0x6148d68ec192df0a7d36d97bdabbebb014c69938': new Set([scroll.id]),
+    '0x7c5bee2a8091c3ef39072f64f18fac913060aeaf': new Set([xLayer.id]),
+    '0xe3dab8bf5187f9b4e8e89ff5414d7cf71e2c82e1': new Set([unichain.id]),
+    '0xc86fb5bf6bfde081fd627c639c05e70d23cf7717': new Set([cronos.id]),
+    '0xc1c76e784db8d68585fb608ce68fc5dcff14000e': new Set([monad.id]),
+    '0x974d1cf6ffa4fce5a4d62955afc02f45aac29f35': new Set([pharos.id]),
+    '0xb193874f0c77948d2bcfec2efaf8bc65b4c2ca89': new Set([hyperEvm.id]),
+    '0x6e2a35a7ad683cf634d91492d73bb7ff774c6919': new Set([robinhood.id]),
+    '0x8f98a825ac89501afe33299ddb561829a24c0cc4': new Set([ink.id]),
 
     // DEX Router Addresses for OKX DEX used in signing exactOut transactions
     '0xa875Fb2204cE71679BE054d97f7fAFFeb6536D67': new Set([ethereum.id]),
@@ -155,6 +166,9 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x2e28281Cf3D58f475cebE27bec4B8a23dFC7782c': new Set([unichain.id]),
     '0x9FD43F5E4c24543b2eBC807321E58e6D350d6a5A': new Set([plasma.id]),
     '0xf534A8a1CAD0543Cd6438f7534CA3486c01998d4': new Set([monad.id]),
+    '0x78466A1488f1883d71cFddd1c621351572dE0a1C': new Set([pharos.id]),
+    '0x56e6983D59bF472Ced0E63966A14d94A3A291589': new Set([hyperEvm.id]),
+    '0x42170295F1173c9e5874ea9d00c6d137E1a4f53d': new Set([robinhood.id]),
 
     // https://web3.binance.com/en/dev-docs/catalog/web3-wallet/api/rest-api/trading-api
     // Router and token approval share one address, deployed at the same address on every chain
@@ -192,25 +206,7 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     ]),
     '0x6fd4383cB451173D5f9304F041C7BCBf27d561fF': new Set([zksync.id]),
 
-    // https://docs.odos.xyz/build/contracts
-    '0xCf5540fFFCdC3d510B18bFcA6d2b9987b0772559': new Set([ethereum.id]),
-    '0xCa423977156BB05b13A2BA3b76Bc5419E2fE9680': new Set([optimism.id]),
-    '0x89b8AA89FDd0507a99d334CBe3C808fAFC7d850E': new Set([bsc.id]),
-    '0x4E3288c9ca110bCC82bf38F09A7b425c095d92Bf': new Set([polygon.id]),
-    '0xaC041Df48dF9791B0654f1Dbbf2CC8450C5f2e9D': new Set([sonic.id]),
-    '0xD0c22A5435F4E8E5770C1fAFb5374015FC12F7cD': new Set([fantom.id]),
-    '0x56c85a254DD12eE8D9C04049a4ab62769Ce98210': new Set([fraxtal.id]),
-    '0x4bBa932E9792A2b917D47830C93a9BC79320E4f7': new Set([zksync.id]),
-    '0xD9F4e85489aDCD0bAF0Cd63b4231c6af58c26745': new Set([mantle.id]),
-    '0x19cEeAd7105607Cd444F5ad10dd51356436095a1': new Set([base.id]),
-    '0x7E15EB462cdc67Cf92Af1f7102465a8F8c784874': new Set([mode.id]),
-    '0xa669e7A0d4b3e4Fa48af2dE86BD4CD7126Be4e13': new Set([arbitrum.id]),
-    '0x88de50B233052e4Fb783d4F6db78Cc34fEa3e9FC': new Set([avalanche.id]),
-    '0x2d8879046f1559E53eb052E949e9544bCB72f414': new Set([linea.id]),
-    '0xbFe03C9E20a9Fc0b37de01A172F207004935E0b1': new Set([scroll.id]),
-    '0x6409722F3a1C4486A3b1FE566cBDd5e9D946A1f3': new Set([unichain.id]),
-
-    // https://docs.uniswap.org/contracts/v2/reference/smart-contracts/v2-deployments
+    // https://developers.uniswap.org/docs/protocols/v2/deployments
     '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D': new Set([ethereum.id]),
     '0x284f11109359a7e1306c3e447ef14d38400063ff': new Set([unichain.id]),
     '0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24': new Set([
@@ -252,7 +248,7 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x7e9D53081e961201837336BcD81f52aE92691a8f': new Set([tempo.id]),
     '0x4f0C28f5926AFDA16bf2506D5D9e57Ea190f9bcA': new Set([xLayer.id]),
 
-    // https://docs.uniswap.org/contracts/v4/deployments
+    // https://developers.uniswap.org/docs/protocols/v4/deployments
     '0x66a9893cc07d91d95644aedd05d03f95e1dba8af': new Set([ethereum.id]),
     '0xef740bf23acae26f6492b10de645d6b98dc8eaf3': new Set([unichain.id]),
     '0x851116d9223fabed8e56c0e6b8ad0c31d98b3507': new Set([optimism.id]),
@@ -267,6 +263,11 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
     '0x94b75331ae8d42c1b61065089b7d48fe14aa73b7': new Set([avalanche.id]),
     '0x1906c1d672b88cd1b9ac7593301ca990f94eae07': new Set([bsc.id]),
     '0xcb695bc5d3aa22cad1e6df07801b061a05a0233a': new Set([celo.id]),
+    '0xda00ae15d3a71466517129255255db7c0c0956d3': new Set([xLayer.id]),
+    '0x0d97dc33264bfc1c226207428a79b26757fb9dc3': new Set([monad.id]),
+    '0x47837eb80db5908eabba9105626d9b348bea7b02': new Set([megaeth.id]),
+    '0xa2dc7d0266f0cc50b3eeaf36c9bfcecff1beea91': new Set([tempo.id]),
+    '0x8876789976decbfcbbbe364623c63652db8c0904': new Set([robinhood.id]),
     '0x000000000022D473030F116dDEE9F6B43aC78BA3': new Set([
       ethereum.id,
       unichain.id,
@@ -277,11 +278,15 @@ const allowlist: Record<Address, Set<number>> = mapKeys(
       blast.id,
       zora.id,
       worldchain.id,
+      xLayer.id,
       ink.id,
       soneium.id,
       avalanche.id,
       bsc.id,
       celo.id,
+      monad.id,
+      megaeth.id,
+      tempo.id,
       robinhood.id,
     ]),
 
